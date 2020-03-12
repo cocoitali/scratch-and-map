@@ -1,47 +1,45 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import FbLogin from "./FbLogin";
 import axios from "axios";
 import { Button, Modal } from "semantic-ui-react";
 
-class Auth extends Component {
-  constructor() {
-    super();
-    this.state = {
-      isLoginOpen: true,
-      isRegisterOpen: false,
-      username: "",
-      password: "",
-      email: ""
-    };
-  }
 
-  clearState = () => {
-    this.setState({ username: "", password: "", email: "" });
+const Auth = props => {
+  const [loginCreds, setLoginCreds] = useState({
+    isLoginOpen: true,
+    isRegisterOpen: false,
+    username: "",
+    password: "",
+    email: ""
+  });
+
+  const clearState = () => {
+    setLoginCreds({ username: "", password: "", email: "" });
   };
 
-  showLogin = e => {
+  const showLogin = e => {
     this.clearState();
-    this.setState({ isLoginOpen: true, isRegisterOpen: false });
+    setLoginCreds({ isLoginOpen: true, isRegisterOpen: false });
   };
 
-  showRegister = e => {
+  const showRegister = e => {
     this.clearState();
-    this.setState({ isRegisterOpen: true, isLoginOpen: false });
+    setLoginCreds({ isRegisterOpen: true, isLoginOpen: false });
   };
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  const handleInputChange = e => {
+    setLoginCreds({ ...loginCreds, [e.target.name]: e.target.value });
   };
 
-  onSubmitHandler = e => {
+  const onSubmitHandler = e => {
     e.preventDefault();
     e.stopPropagation();
-    const action = this.state.isLoginOpen ? "login" : "signup";
+    const action = loginCreds.isLoginOpen ? "login" : "signup";
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}/${action}`, {
-        username: this.state.username,
-        email: this.state.email,
-        password: this.state.password
+        username: loginCreds.username,
+        email: loginCreds.email,
+        password: loginCreds.password
       })
       .then(response => {
         console.log(response);
@@ -49,53 +47,52 @@ class Auth extends Component {
       });
   };
 
-  render() {
-    return (
-      <div className="landing">
-        <div className="Nav">
-          <Modal
-            size="mini"
-            trigger={
-              <Button className="navbutton" inverted>
-                SIGN UP
-              </Button>
-            }
-            closeIcon
-          >
-            <Modal.Content>
-              <div className="box-wrapper">
-                {this.state.isLoginOpen && (
-                  <FbLogin
-                    inputChange={this.handleInputChange}
-                    submit={this.onSubmitHandler}
-                  />
-                )}
-              </div>
-            </Modal.Content>
-          </Modal>
+  return (
+    <div className="landing">
+      <div className="Nav">
+        <Modal
+          size="mini"
+          trigger={
+            <Button className="navbutton" inverted>
+              SIGN UP
+            </Button>
+          }
+          closeIcon
+        >
+          <Modal.Content>
+            <div className="box-wrapper">
+              {loginCreds.isLoginOpen && (
+                <FbLogin
+                  onChange={e => handleInputChange(e)}
+                  submit={e =>onSubmitHandler(e)}
+                />
+              )}
+            </div>
+          </Modal.Content>
+        </Modal>
 
-          <Modal
-            size="mini"
-            trigger={
-              <Button className="navbutton" inverted>
-                LOG IN
-              </Button>
-            }
-            closeIcon
-          >
-            <Modal.Content image>
-              <div className="box-wrapper">
-                {this.state.isLoginOpen && (
-                  <FbLogin
-                    inputChange={this.handleInputChange}
-                    submit={this.onSubmitHandler}
-                  />
-                )}
-              </div>
-            </Modal.Content>
-          </Modal>
+        <Modal
+          size="mini"
+          trigger={
+            <Button className="navbutton" inverted>
+              LOG IN
+            </Button>
+          }
+          closeIcon
+        >
+          <Modal.Content image>
+            <div className="box-wrapper">
+              {loginCreds.isLoginOpen && (
+                <FbLogin
+                  onChange={e => handleInputChange(e)}
+                  submit={e =>onSubmitHandler(e)}
+                />
+              )}
+            </div>
+          </Modal.Content>
+        </Modal>
 
-          {/* <div className="auth-wrapper">
+        {/* <div className="auth-wrapper">
         <div className="auth-controller">
           <div
             className={
@@ -117,10 +114,9 @@ class Auth extends Component {
           </div>
         </div>
       </div> */}
-        </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default Auth;
