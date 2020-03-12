@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import FbLogin from "./FbLogin";
 
 const Login = props => {
-  const [credentials, setCredentials] = useState({});
+  const [credentials, setCredentials] = useState(props);
 
   // const login = e => {
   //   e.preventDefault();
@@ -24,15 +24,15 @@ const Login = props => {
   return (
     <div className="login-register-wrapper">
       <div className="form-wrapper">
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={e => handleSubmit(e)}>
           <div className="input-wrapper">
             <label className="login-label">Username or email</label>
             <input
               className="login-input"
               name="username" //how to add a second name for email?
-              value={this.props.username}
+              value={credentials.username}
               placeholder=""
-              onChange={this.props.inputChange}
+              onChange={credentials.inputChange}
               type="text"
             />
           </div>
@@ -44,7 +44,7 @@ const Login = props => {
               name="password"
               value={credentials.password}
               placeholder=""
-              onChange={this.handleInputChange}
+              onChange={e => handleInputChange(e)}
               type="password"
             />
           </div>
@@ -52,7 +52,7 @@ const Login = props => {
             <button
               className="login-btn"
               type="submit"
-              onClick={this.props.submit}
+              onClick={credentials.submit}
             >
               Log in
             </button>

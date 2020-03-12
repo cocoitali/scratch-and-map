@@ -1,24 +1,20 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-class Register extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
+const Register = props => {
+  const [state, setState] = useState(props)
 
-  render() {
     return (
       <div className="login-register-wrapper">
         <div className="form-wrapper">
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={state.handleSubmit}>
             <div className="input-wrapper">
               <label className="login-label">Username</label>
               <input
                 className="login-input"
                 name="username"
-                value={this.props.username}
+                value={state.username}
                 placeholder=""
-                onChange={this.props.inputChange}
+                onChange={state.inputChange}
                 type="text"
               />
             </div>
@@ -28,9 +24,9 @@ class Register extends Component {
               <input
                 className="login-input"
                 name="email"
-                value={this.props.email}
+                value={state.email}
                 placeholder=""
-                onChange={this.props.inputChange}
+                onChange={state.inputChange}
                 type="email"
               />
             </div>
@@ -40,9 +36,9 @@ class Register extends Component {
               <input
                 className="login-input"
                 name="password"
-                value={this.props.password}
+                value={state.password}
                 placeholder=""
-                onChange={this.props.inputChange}
+                onChange={state.inputChange}
                 type="password"
               />
             </div>
@@ -50,7 +46,7 @@ class Register extends Component {
               <button
                 className="login-btn"
                 type="submit"
-                onClick={this.props.submit}
+                onClick={state.submit}
               >
                 Start scratching now
               </button>
@@ -76,6 +72,6 @@ class Register extends Component {
       </div>
     );
   }
-}
+
 
 export default Register;
